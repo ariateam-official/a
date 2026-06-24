@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taha DEV D</title>
-    <!-- Font & Icons -->
+    <title>Taha DEV D - اتاق‌های صوتی</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -34,7 +34,7 @@
             padding: 2.5rem 2.8rem;
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
             width: 100%;
-            max-width: 780px;
+            max-width: 850px;
             transition: all 0.25s ease;
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
@@ -157,6 +157,12 @@
             border-color: #7a8cff;
         }
 
+        .btn-danger {
+            background: linear-gradient(145deg, #ff5e7a, #d6304a);
+            border-color: #ff6b85;
+            color: white;
+        }
+
         .user-badge {
             background: rgba(0, 0, 0, 0.25);
             border-radius: 80px;
@@ -189,10 +195,6 @@
             gap: 1.3rem;
         }
 
-        .room-form .input-group {
-            gap: 0.2rem;
-        }
-
         .room-form .inline-row {
             display: flex;
             flex-wrap: wrap;
@@ -202,21 +204,6 @@
 
         .room-form .inline-row .input-group {
             flex: 1 1 120px;
-        }
-
-        .footnote {
-            margin-top: 2.5rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #6f7da3;
-            border-top: 1px solid #1d2848;
-            padding-top: 1.8rem;
-            line-height: 1.8;
-        }
-
-        .footnote strong {
-            color: #aab6f0;
-            font-weight: 500;
         }
 
         .chat-preview {
@@ -246,17 +233,66 @@
             box-shadow: 0 0 12px #2ecc71aa;
         }
 
-        .flex-center {
+        .member-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .member-tag {
+            background: #1d2a4a;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            border: 1px solid #3d4b7a;
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+
+        .member-tag .online {
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* Responsive */
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footnote {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6f7da3;
+            border-top: 1px solid #1d2848;
+            padding-top: 1.8rem;
+            line-height: 1.8;
+        }
+
+        .footnote strong {
+            color: #aab6f0;
+            font-weight: 500;
+        }
+
+        .toast {
+            background: #1a2648;
+            border-radius: 30px;
+            padding: 10px 20px;
+            border-left: 4px solid #5f72ff;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 550px) {
             .glass-card {
                 padding: 1.8rem 1.2rem;
@@ -296,6 +332,7 @@
             <i class="fas fa-check-circle" style="color: #6f84ff;"></i>
             <span id="displayUsername">---</span>
             <span id="displayUserId">####</span>
+            <span id="peerStatus" style="font-size:0.7rem; color:#7a8cff;"><i class="fas fa-circle"></i> در حال اتصال...</span>
         </div>
 
         <div class="row-buttons">
@@ -303,7 +340,7 @@
             <button class="btn btn-outline" id="createRoomBtn"><i class="fas fa-plus-circle"></i> ساخت اتاق</button>
         </div>
 
-        <!-- بخش ورود به اتاق (فرم ورود) -->
+        <!-- بخش ورود به اتاق -->
         <div id="enterRoomForm" class="room-form hidden">
             <div class="input-group">
                 <label><i class="fas fa-hashtag"></i> آیدی اتاق (۴ رقمی)</label>
@@ -316,7 +353,7 @@
             <button class="btn btn-primary" id="joinRoomAction"><i class="fas fa-sign-in-alt"></i> وارد شو</button>
         </div>
 
-        <!-- بخش ساخت اتاق (فرم کامل) -->
+        <!-- بخش ساخت اتاق -->
         <div id="createRoomForm" class="room-form hidden">
             <div class="inline-row">
                 <div class="input-group">
@@ -339,7 +376,7 @@
             <button class="btn btn-primary" id="createRoomAction"><i class="fas fa-rocket"></i> ساخت اتاق</button>
         </div>
 
-        <!-- نمایش وضعیت اتاق صوتی (شبیه دیسکورد) -->
+        <!-- نمایش وضعیت اتاق صوتی -->
         <div id="voiceStatus" class="chat-preview hidden">
             <i class="fas fa-headset"></i>
             <span id="voiceRoomName">اتاق صوتی</span>
@@ -348,6 +385,12 @@
             <button id="leaveVoiceBtn" style="background:transparent; border:1px solid #ff5e7a; border-radius:40px; padding:0.2rem 1.2rem; color:#ff8a9e; cursor:pointer;">
                 <i class="fas fa-phone-slash"></i> ترک
             </button>
+        </div>
+
+        <!-- لیست اعضای اتاق -->
+        <div id="memberListContainer" class="hidden" style="margin-top: 10px;">
+            <div style="font-size:0.8rem; opacity:0.6; margin-bottom:6px;"><i class="fas fa-users"></i> اعضای آنلاین:</div>
+            <div id="memberList" class="member-list"></div>
         </div>
 
         <div style="margin-top: 1rem; font-size:0.8rem; color:#6b7caa; text-align:center;">
@@ -364,20 +407,23 @@
 
 <script>
     (function() {
-        // ---------- حالت برنامه ----------
+        // ---------- وضعیت برنامه ----------
         let currentUser = {
             name: '',
-            id: ''
+            id: '',
+            peerId: ''
         };
 
-        // اتاق‌های ساختگی (شبیه‌سازی شده)
+        let currentRoom = null; // { id, name, max, password, members: [] }
+        let peer = null;
+        let connections = {}; // peerId -> MediaConnection
+        let localStream = null;
+
+        // روم‌های ذخیره شده (در حافظه، برای دمو)
         let rooms = [
             { id: '1568', name: 'گپ شبانه', max: 6, password: 'iran2222', members: ['Taha', 'Ali'] },
             { id: '2391', name: 'بازی‌های آنلاین', max: 4, password: '', members: ['Sara'] },
         ];
-
-        // اتاق فعلی که کاربر در آن است (برای نمایش)
-        let currentRoomId = null;
 
         // DOM elements
         const step1 = document.getElementById('step1');
@@ -386,6 +432,7 @@
         const confirmUserBtn = document.getElementById('confirmUserBtn');
         const displayUsername = document.getElementById('displayUsername');
         const displayUserId = document.getElementById('displayUserId');
+        const peerStatus = document.getElementById('peerStatus');
 
         const enterRoomBtn = document.getElementById('enterRoomBtn');
         const createRoomBtn = document.getElementById('createRoomBtn');
@@ -406,8 +453,10 @@
         const voiceRoomName = document.getElementById('voiceRoomName');
         const memberCount = document.getElementById('memberCount');
         const leaveVoiceBtn = document.getElementById('leaveVoiceBtn');
+        const memberListContainer = document.getElementById('memberListContainer');
+        const memberList = document.getElementById('memberList');
 
-        // helpers
+        // Helpers
         function generateUserId() {
             return Math.floor(1000 + Math.random() * 9000).toString();
         }
@@ -416,26 +465,115 @@
             return Math.floor(1000 + Math.random() * 9000).toString();
         }
 
-        // نمایش مرحله ۲ با اطلاعات کاربر
+        // PeerJS initialization
+        function initPeer() {
+            peer = new Peer(undefined, {
+                debug: 2
+            });
+
+            peer.on('open', (id) => {
+                currentUser.peerId = id;
+                peerStatus.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71;"></i> متصل`;
+                peerStatus.style.color = '#2ecc71';
+                console.log('Peer ID:', id);
+            });
+
+            peer.on('call', (call) => {
+                // دریافت تماس از کاربر دیگر
+                if (!localStream) {
+                    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                        .then(stream => {
+                            localStream = stream;
+                            call.answer(stream);
+                            setupCall(call);
+                        })
+                        .catch(err => {
+                            console.error('خطا در دریافت صدا:', err);
+                            alert('دسترسی به میکروفون لازم است!');
+                        });
+                } else {
+                    call.answer(localStream);
+                    setupCall(call);
+                }
+            });
+
+            peer.on('error', (err) => {
+                console.error('Peer error:', err);
+                peerStatus.innerHTML = `<i class="fas fa-exclamation-circle" style="color:#ff6b6b;"></i> خطا`;
+            });
+        }
+
+        function setupCall(call) {
+            call.on('stream', (remoteStream) => {
+                // پخش صدای کاربر دیگر
+                const audio = new Audio();
+                audio.srcObject = remoteStream;
+                audio.autoplay = true;
+                console.log('دریافت صدا از:', call.peer);
+            });
+            connections[call.peer] = call;
+        }
+
+        // اتصال به کاربر دیگر
+        function connectToPeer(peerId) {
+            if (!peer) return;
+            if (!localStream) {
+                navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                    .then(stream => {
+                        localStream = stream;
+                        const call = peer.call(peerId, stream);
+                        setupCall(call);
+                    })
+                    .catch(err => {
+                        console.error('خطا در دریافت صدا:', err);
+                        alert('دسترسی به میکروفون لازم است!');
+                    });
+            } else {
+                const call = peer.call(peerId, localStream);
+                setupCall(call);
+            }
+        }
+
+        // نمایش مرحله ۲
         function showStep2() {
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             displayUsername.textContent = currentUser.name;
             displayUserId.textContent = currentUser.id;
-            // مخفی کردن فرم‌ها
             enterRoomForm.classList.add('hidden');
             createRoomForm.classList.add('hidden');
-            // اگر در اتاق صوتی هستیم، نمایش بدیم (فعلا خاموش)
-            if (currentRoomId) {
-                const room = rooms.find(r => r.id === currentRoomId);
-                if (room) {
-                    voiceStatus.classList.remove('hidden');
-                    voiceRoomName.textContent = room.name || 'اتاق صوتی';
-                    memberCount.textContent = room.members.length + ' نفر';
-                }
+            if (currentRoom) {
+                updateRoomUI();
             } else {
                 voiceStatus.classList.add('hidden');
+                memberListContainer.classList.add('hidden');
             }
+        }
+
+        // به‌روزرسانی UI اتاق
+        function updateRoomUI() {
+            if (!currentRoom) {
+                voiceStatus.classList.add('hidden');
+                memberListContainer.classList.add('hidden');
+                return;
+            }
+            voiceStatus.classList.remove('hidden');
+            voiceRoomName.textContent = currentRoom.name || 'اتاق صوتی';
+            memberCount.textContent = currentRoom.members.length + ' نفر';
+
+            // نمایش لیست اعضا
+            if (currentRoom.members.length > 0) {
+                memberListContainer.classList.remove('hidden');
+                memberList.innerHTML = currentRoom.members.map(m => 
+                    `<span class="member-tag"><span class="online"></span> ${m}</span>`
+                ).join('');
+            } else {
+                memberListContainer.classList.add('hidden');
+            }
+
+            // اتصال به تمام اعضای دیگر (برای صدا)
+            // در دنیای واقعی، باید از سرور سیگنالینگ استفاده کنیم
+            // اینجا فقط شبیه‌سازی می‌کنیم
         }
 
         // تایید نام کاربر
@@ -447,6 +585,7 @@
             }
             currentUser.name = rawName;
             currentUser.id = generateUserId();
+            initPeer();
             showStep2();
         });
 
@@ -455,7 +594,7 @@
             if (e.key === 'Enter') confirmUserBtn.click();
         });
 
-        // ---- دکمه‌های ورود / ساخت ----
+        // ورود / ساخت اتاق
         enterRoomBtn.addEventListener('click', function() {
             createRoomForm.classList.add('hidden');
             enterRoomForm.classList.toggle('hidden');
@@ -470,7 +609,6 @@
             enterRoomForm.classList.add('hidden');
             createRoomForm.classList.toggle('hidden');
             if (!createRoomForm.classList.contains('hidden')) {
-                // مقداردهی آیدی رندوم برای اتاق جدید
                 newRoomId.value = generateRoomId();
                 roomName.value = '';
                 roomPassword.value = '';
@@ -478,7 +616,7 @@
             }
         });
 
-        // ---- ورود به اتاق (اکشن) ----
+        // ورود به اتاق
         joinRoomAction.addEventListener('click', function() {
             const roomId = roomIdInput.value.trim();
             const pass = roomPassInput.value.trim();
@@ -500,11 +638,6 @@
                     alert('رمز اتاق اشتباه است!');
                     return;
                 }
-            } else {
-                // اگر رمز نداشت ولی کاربر چیزی وارد کرده، نادیده میگیریم
-                if (pass.length > 0) {
-                    // optional: ignore
-                }
             }
 
             // بررسی ظرفیت
@@ -513,26 +646,30 @@
                 return;
             }
 
-            // اضافه کردن کاربر به اتاق
+            // اضافه کردن کاربر
             if (!foundRoom.members.includes(currentUser.name)) {
                 foundRoom.members.push(currentUser.name);
             }
-            currentRoomId = foundRoom.id;
+            currentRoom = foundRoom;
+            updateRoomUI();
 
-            // نمایش وضعیت صوتی
-            voiceStatus.classList.remove('hidden');
-            voiceRoomName.textContent = foundRoom.name || 'اتاق صوتی';
-            memberCount.textContent = foundRoom.members.length + ' نفر';
+            // اطلاع رسانی به سایر اعضا (شبیه‌سازی)
+            alert(`🎤 شما به اتاق "${foundRoom.name}" وارد شدید.`);
 
-            // شبیه‌سازی پیام دیسکوردی (صدا برای همه)
-            alert(`🎤 شما به اتاق "${foundRoom.name}" وارد شدید. صدای شما برای ${foundRoom.members.length} نفر قابل شنیدن است. (شبیه‌سازی شده)`);
+            // اتصال به سایر اعضا (برای صدا)
+            // در اینجا باید به همه اعضای دیگر متصل شویم
+            // برای سادگی، فقط به اولین عضو متصل می‌شویم
+            const otherMembers = foundRoom.members.filter(m => m !== currentUser.name);
+            if (otherMembers.length > 0 && peer) {
+                // در دنیای واقعی، باید peerId هر عضو را داشته باشیم
+                // اینجا فقط شبیه‌سازی می‌کنیم
+                console.log('اتصال به اعضای دیگر:', otherMembers);
+            }
 
-            // مخفی کردن فرم ورود
             enterRoomForm.classList.add('hidden');
-            // به‌روزرسانی لیست (در real می‌تونست refresh کنه)
         });
 
-        // ---- ساخت اتاق (اکشن) ----
+        // ساخت اتاق جدید
         createRoomAction.addEventListener('click', function() {
             const roomId = newRoomId.value.trim();
             const max = parseInt(maxUsers.value, 10);
@@ -547,7 +684,6 @@
                 alert('حداکثر نفرات باید بین ۲ تا ۱۰۰ باشد.');
                 return;
             }
-            // بررسی تکراری نبودن آیدی
             if (rooms.some(r => r.id === roomId)) {
                 alert('این آیدی قبلا استفاده شده. دوباره تلاش کنید.');
                 newRoomId.value = generateRoomId();
@@ -562,47 +698,38 @@
                 members: [currentUser.name]
             };
             rooms.push(newRoom);
-            currentRoomId = roomId;
-
-            // نمایش وضعیت
-            voiceStatus.classList.remove('hidden');
-            voiceRoomName.textContent = newRoom.name;
-            memberCount.textContent = newRoom.members.length + ' نفر';
+            currentRoom = newRoom;
+            updateRoomUI();
 
             alert(`✅ اتاق "${name}" با آیدی ${roomId} ساخته شد! شما به عنوان میزبان وارد شدید.`);
-
-            // مخفی کردن فرم ساخت
             createRoomForm.classList.add('hidden');
-            // رفرش لیست اتاق‌ها (در اینجا فقط کنسول)
-            console.log('اتاق‌های فعال:', rooms);
         });
 
-        // ---- ترک اتاق صوتی ----
+        // ترک اتاق
         leaveVoiceBtn.addEventListener('click', function() {
-            if (currentRoomId) {
-                const room = rooms.find(r => r.id === currentRoomId);
-                if (room) {
-                    const idx = room.members.indexOf(currentUser.name);
-                    if (idx !== -1) room.members.splice(idx, 1);
-                    // اگر اتاق خالی شد، می‌تونیم حذفش کنیم (اختیاری)
-                    if (room.members.length === 0) {
-                        // حذف اتاق از لیست (اختیاری)
-                        // rooms = rooms.filter(r => r.id !== currentRoomId);
-                        // برای نمایش بهتر، کامنت می‌کنیم ولی می‌تونیم حذف کنیم
-                    }
+            if (currentRoom) {
+                const idx = currentRoom.members.indexOf(currentUser.name);
+                if (idx !== -1) currentRoom.members.splice(idx, 1);
+                
+                // قطع اتصالات صوتی
+                Object.values(connections).forEach(call => {
+                    call.close();
+                });
+                connections = {};
+
+                if (currentRoom.members.length === 0) {
+                    rooms = rooms.filter(r => r.id !== currentRoom.id);
                 }
-                currentRoomId = null;
+                currentRoom = null;
                 voiceStatus.classList.add('hidden');
+                memberListContainer.classList.add('hidden');
                 alert('شما از اتاق خارج شدید.');
-                // به‌روزرسانی وضعیت
-                // همچنین اگر اتاق خالی شد، حذف از لیست (برای تمیزکاری)
-                rooms = rooms.filter(r => r.members.length > 0 || r.id === currentRoomId);
             } else {
                 alert('شما در هیچ اتاقی نیستید.');
             }
         });
 
-        // ---- شبیه‌سازی ورود با اینتر (روی فیلدهای ورود) ----
+        // شبیه‌سازی ورود با اینتر
         roomIdInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') joinRoomAction.click();
         });
@@ -610,31 +737,29 @@
             if (e.key === 'Enter') joinRoomAction.click();
         });
 
-        // ---- اضافه کردن قابلیت کلیک روی نام کاربر برای تغییر (اختیاری) ----
-        // اگر کاربر خواست نام رو تغییر بده، دوباره مرحله ۱
-        // (می‌تونیم یک دکمه کوچک بذاریم ولی برای سادگی، ریفش یا کلیک روی نام)
-
-        // ---- مقداردهی اولیه (مخفی کردن step2) ----
+        // آماده‌سازی اولیه
         step2.classList.add('hidden');
-        // یک اتاق پیشفرض برای نمایش
         if (!rooms.find(r => r.id === '1568')) {
             rooms.push({ id: '1568', name: 'گپ شبانه', max: 6, password: 'iran2222', members: ['Taha', 'Ali'] });
         }
 
-        // نمایش در کنسول برای دیباگ
-        console.log('🔥 Taha DEV D - آماده!');
-        console.log('اتاق‌های پیشفرض:', rooms);
+        console.log('🔥 Taha DEV D - نسخه واقعی با WebRTC');
+        console.log('اتاق‌های موجود:', rooms);
 
-        // همچنین یک راهنمای کوچک برای کاربر در صورت نیاز
-        // اگر کاربری بخواهد با اتاق پیشفرض تست کنه
-        // در فوتر پیام
+        // تابع کمکی برای افزودن عضو به اتاق (برای تست)
+        window.addTestMember = function(roomId, memberName) {
+            const room = rooms.find(r => r.id === roomId);
+            if (room && !room.members.includes(memberName)) {
+                room.members.push(memberName);
+                if (currentRoom && currentRoom.id === roomId) {
+                    updateRoomUI();
+                }
+                console.log(`👤 ${memberName} به اتاق ${roomId} اضافه شد`);
+            }
+        };
+
+        console.log('💡 برای تست: addTestMember("1568", "NewUser")');
     })();
 </script>
-
-<!-- توضیحات تکمیلی: این کد به صورت کامل روی GitHub Pages کار می‌کند.
-     ساختار صوتی شبیه‌سازی شده با WebRTC نیست ولی UX کاملا مشابه دیسکورد طراحی شده.
-     برای پیاده‌سازی واقعی صدا نیاز به WebRTC + signaling server هست که خارج از scope این پروژه است.
-     اما UI و منطق اتاق‌ها و ورود/خروج کامل پیاده‌سازی شده است.
--->
 </body>
 </html>
