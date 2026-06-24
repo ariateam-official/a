@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taha DEV D</title>
+    <!-- Font & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 20% 30%, #0b0e1a, #03050b);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #f0f4ff;
+            padding: 1.5rem;
+        }
+
+        .glass-card {
+            background: rgba(20, 28, 48, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 48px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            max-width: 780px;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b7baff, #7a8cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 30px rgba(90, 120, 255, 0.3);
+        }
+
+        .brand .sub {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .step-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group input {
+            background: rgba(8, 14, 30, 0.7);
+            border: 1px solid #2f3a66;
+            border-radius: 40px;
+            padding: 0.9rem 1.6rem;
+            font-size: 1rem;
+            color: white;
+            outline: none;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            border-color: #7a8cff;
+            box-shadow: 0 0 20px rgba(90, 120, 255, 0.2);
+            background: rgba(12, 20, 42, 0.8);
+        }
+
+        .input-group input::placeholder {
+            color: #6b7399;
+            font-weight: 300;
+        }
+
+        .row-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn {
+            background: rgba(30, 44, 80, 0.6);
+            border: 1px solid #3d4b7a;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #eef3ff;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(6px);
+            flex: 1 0 auto;
+            justify-content: center;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #5f72ff, #3b4fcf);
+            border-color: #6f84ff;
+            box-shadow: 0 6px 20px rgba(60, 90, 255, 0.25);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(145deg, #7184ff, #4a5fdf);
+            box-shadow: 0 8px 28px rgba(60, 90, 255, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: #4a5a8a;
+        }
+
+        .btn-outline:hover {
+            background: rgba(80, 110, 255, 0.1);
+            border-color: #7a8cff;
+        }
+
+        .user-badge {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 80px;
+            padding: 0.7rem 1.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(6px);
+            border: 1px solid #2e3d6b;
+            margin: 0.5rem 0 0.2rem;
+        }
+
+        .user-badge span {
+            font-weight: 500;
+            background: #1d2a4a;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #bcc6ff;
+        }
+
+        .room-form {
+            background: rgba(8, 14, 30, 0.4);
+            border-radius: 32px;
+            padding: 1.5rem 1.8rem;
+            margin: 1rem 0 0.5rem;
+            border: 1px solid #2c3c68;
+            display: flex;
+            flex-direction: column;
+            gap: 1.3rem;
+        }
+
+        .room-form .input-group {
+            gap: 0.2rem;
+        }
+
+        .room-form .inline-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .room-form .inline-row .input-group {
+            flex: 1 1 120px;
+        }
+
+        .footnote {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6f7da3;
+            border-top: 1px solid #1d2848;
+            padding-top: 1.8rem;
+            line-height: 1.8;
+        }
+
+        .footnote strong {
+            color: #aab6f0;
+            font-weight: 500;
+        }
+
+        .chat-preview {
+            background: #0a0f22;
+            border-radius: 30px;
+            padding: 1rem 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid #5f72ff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .chat-preview i {
+            color: #7a8cff;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin-left: 6px;
+            box-shadow: 0 0 12px #2ecc71aa;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 550px) {
+            .glass-card {
+                padding: 1.8rem 1.2rem;
+                border-radius: 32px;
+            }
+            .brand h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-card" id="appContainer">
+    <div class="brand">
+        <h1>Taha DEV D</h1>
+        <div class="sub"><i class="fas fa-microchip"></i>  ·  اتاق‌های صوتی زنده</div>
+    </div>
+
+    <!-- مرحله ۱: دریافت اسم کاربر -->
+    <div id="step1" class="step-panel">
+        <div class="input-group">
+            <label><i class="fas fa-user-astronaut"></i> نام خود را وارد کنید</label>
+            <input type="text" id="usernameInput" placeholder="مثلا: Taha" />
+        </div>
+        <button class="btn btn-primary" id="confirmUserBtn">
+            <i class="fas fa-arrow-left"></i> تایید نام
+        </button>
+        <div style="margin-top: 0.4rem; font-size: 0.8rem; opacity: 0.5; display: flex; gap: 8px;">
+            <i class="fas fa-shield-alt"></i>  آیدی چهار رقمی به شما تعلق می‌گیرد
+        </div>
+    </div>
+
+    <!-- مرحله ۲: پس از دریافت اسم و آیدی رندوم -->
+    <div id="step2" class="step-panel hidden">
+        <div class="user-badge">
+            <i class="fas fa-check-circle" style="color: #6f84ff;"></i>
+            <span id="displayUsername">---</span>
+            <span id="displayUserId">####</span>
+        </div>
+
+        <div class="row-buttons">
+            <button class="btn btn-primary" id="enterRoomBtn"><i class="fas fa-door-open"></i> ورود به اتاق</button>
+            <button class="btn btn-outline" id="createRoomBtn"><i class="fas fa-plus-circle"></i> ساخت اتاق</button>
+        </div>
+
+        <!-- بخش ورود به اتاق (فرم ورود) -->
+        <div id="enterRoomForm" class="room-form hidden">
+            <div class="input-group">
+                <label><i class="fas fa-hashtag"></i> آیدی اتاق (۴ رقمی)</label>
+                <input type="text" id="roomIdInput" placeholder="مثلا 1568" maxlength="4" />
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-key"></i> رمز اتاق (در صورت وجود)</label>
+                <input type="text" id="roomPassInput" placeholder="رمز عبور ..." />
+            </div>
+            <button class="btn btn-primary" id="joinRoomAction"><i class="fas fa-sign-in-alt"></i> وارد شو</button>
+        </div>
+
+        <!-- بخش ساخت اتاق (فرم کامل) -->
+        <div id="createRoomForm" class="room-form hidden">
+            <div class="inline-row">
+                <div class="input-group">
+                    <label><i class="fas fa-hashtag"></i> آیدی اتاق</label>
+                    <input type="text" id="newRoomId" readonly style="background:#141f3a; color:#b0c0ff;" />
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> حداکثر نفرات (۲-۱۰۰)</label>
+                    <input type="number" id="maxUsers" min="2" max="100" value="6" />
+                </div>
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-tag"></i> نام اتاق</label>
+                <input type="text" id="roomName" placeholder="اتاق خصوصی Taha" />
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> رمز اتاق (اختیاری)</label>
+                <input type="text" id="roomPassword" placeholder="رمز بگذارید یا خالی بذارید" />
+            </div>
+            <button class="btn btn-primary" id="createRoomAction"><i class="fas fa-rocket"></i> ساخت اتاق</button>
+        </div>
+
+        <!-- نمایش وضعیت اتاق صوتی (شبیه دیسکورد) -->
+        <div id="voiceStatus" class="chat-preview hidden">
+            <i class="fas fa-headset"></i>
+            <span id="voiceRoomName">اتاق صوتی</span>
+            <span class="status-dot"></span>
+            <span id="memberCount" style="margin-right:auto; opacity:0.7;">۰ نفر</span>
+            <button id="leaveVoiceBtn" style="background:transparent; border:1px solid #ff5e7a; border-radius:40px; padding:0.2rem 1.2rem; color:#ff8a9e; cursor:pointer;">
+                <i class="fas fa-phone-slash"></i> ترک
+            </button>
+        </div>
+
+        <div style="margin-top: 1rem; font-size:0.8rem; color:#6b7caa; text-align:center;">
+            <i class="fas fa-info-circle"></i>  صدا به صورت هم‌زمان برای همه اعضای اتاق پخش می‌شود.
+        </div>
+    </div>
+
+    <!-- فوتر -->
+    <div class="footnote">
+        <div>تمامی حقوق محفوظ است <strong>Ghasemi R</strong></div>
+        <div>Powered by <strong>TahaGhasemi</strong> Summer2026 <i class="fas fa-crown" style="color:#f1c40f;"></i></div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- حالت برنامه ----------
+        let currentUser = {
+            name: '',
+            id: ''
+        };
+
+        // اتاق‌های ساختگی (شبیه‌سازی شده)
+        let rooms = [
+            { id: '1568', name: 'گپ شبانه', max: 6, password: 'iran2222', members: ['Taha', 'Ali'] },
+            { id: '2391', name: 'بازی‌های آنلاین', max: 4, password: '', members: ['Sara'] },
+        ];
+
+        // اتاق فعلی که کاربر در آن است (برای نمایش)
+        let currentRoomId = null;
+
+        // DOM elements
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const usernameInput = document.getElementById('usernameInput');
+        const confirmUserBtn = document.getElementById('confirmUserBtn');
+        const displayUsername = document.getElementById('displayUsername');
+        const displayUserId = document.getElementById('displayUserId');
+
+        const enterRoomBtn = document.getElementById('enterRoomBtn');
+        const createRoomBtn = document.getElementById('createRoomBtn');
+        const enterRoomForm = document.getElementById('enterRoomForm');
+        const createRoomForm = document.getElementById('createRoomForm');
+
+        const roomIdInput = document.getElementById('roomIdInput');
+        const roomPassInput = document.getElementById('roomPassInput');
+        const joinRoomAction = document.getElementById('joinRoomAction');
+
+        const newRoomId = document.getElementById('newRoomId');
+        const maxUsers = document.getElementById('maxUsers');
+        const roomName = document.getElementById('roomName');
+        const roomPassword = document.getElementById('roomPassword');
+        const createRoomAction = document.getElementById('createRoomAction');
+
+        const voiceStatus = document.getElementById('voiceStatus');
+        const voiceRoomName = document.getElementById('voiceRoomName');
+        const memberCount = document.getElementById('memberCount');
+        const leaveVoiceBtn = document.getElementById('leaveVoiceBtn');
+
+        // helpers
+        function generateUserId() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        function generateRoomId() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        // نمایش مرحله ۲ با اطلاعات کاربر
+        function showStep2() {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            displayUsername.textContent = currentUser.name;
+            displayUserId.textContent = currentUser.id;
+            // مخفی کردن فرم‌ها
+            enterRoomForm.classList.add('hidden');
+            createRoomForm.classList.add('hidden');
+            // اگر در اتاق صوتی هستیم، نمایش بدیم (فعلا خاموش)
+            if (currentRoomId) {
+                const room = rooms.find(r => r.id === currentRoomId);
+                if (room) {
+                    voiceStatus.classList.remove('hidden');
+                    voiceRoomName.textContent = room.name || 'اتاق صوتی';
+                    memberCount.textContent = room.members.length + ' نفر';
+                }
+            } else {
+                voiceStatus.classList.add('hidden');
+            }
+        }
+
+        // تایید نام کاربر
+        confirmUserBtn.addEventListener('click', function() {
+            const rawName = usernameInput.value.trim();
+            if (rawName.length < 2) {
+                alert('لطفا نام خود را وارد کنید (حداقل ۲ کاراکتر)');
+                return;
+            }
+            currentUser.name = rawName;
+            currentUser.id = generateUserId();
+            showStep2();
+        });
+
+        // Enter key on username
+        usernameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') confirmUserBtn.click();
+        });
+
+        // ---- دکمه‌های ورود / ساخت ----
+        enterRoomBtn.addEventListener('click', function() {
+            createRoomForm.classList.add('hidden');
+            enterRoomForm.classList.toggle('hidden');
+            if (!enterRoomForm.classList.contains('hidden')) {
+                roomIdInput.value = '';
+                roomPassInput.value = '';
+                roomIdInput.focus();
+            }
+        });
+
+        createRoomBtn.addEventListener('click', function() {
+            enterRoomForm.classList.add('hidden');
+            createRoomForm.classList.toggle('hidden');
+            if (!createRoomForm.classList.contains('hidden')) {
+                // مقداردهی آیدی رندوم برای اتاق جدید
+                newRoomId.value = generateRoomId();
+                roomName.value = '';
+                roomPassword.value = '';
+                maxUsers.value = 6;
+            }
+        });
+
+        // ---- ورود به اتاق (اکشن) ----
+        joinRoomAction.addEventListener('click', function() {
+            const roomId = roomIdInput.value.trim();
+            const pass = roomPassInput.value.trim();
+
+            if (!roomId || roomId.length !== 4 || isNaN(roomId)) {
+                alert('آیدی اتاق باید ۴ رقم باشد.');
+                return;
+            }
+
+            const foundRoom = rooms.find(r => r.id === roomId);
+            if (!foundRoom) {
+                alert('اتاقی با این آیدی پیدا نشد!');
+                return;
+            }
+
+            // بررسی رمز
+            if (foundRoom.password && foundRoom.password.length > 0) {
+                if (pass !== foundRoom.password) {
+                    alert('رمز اتاق اشتباه است!');
+                    return;
+                }
+            } else {
+                // اگر رمز نداشت ولی کاربر چیزی وارد کرده، نادیده میگیریم
+                if (pass.length > 0) {
+                    // optional: ignore
+                }
+            }
+
+            // بررسی ظرفیت
+            if (foundRoom.members.length >= foundRoom.max) {
+                alert('اتاق پر است! ظرفیت تکمیل.');
+                return;
+            }
+
+            // اضافه کردن کاربر به اتاق
+            if (!foundRoom.members.includes(currentUser.name)) {
+                foundRoom.members.push(currentUser.name);
+            }
+            currentRoomId = foundRoom.id;
+
+            // نمایش وضعیت صوتی
+            voiceStatus.classList.remove('hidden');
+            voiceRoomName.textContent = foundRoom.name || 'اتاق صوتی';
+            memberCount.textContent = foundRoom.members.length + ' نفر';
+
+            // شبیه‌سازی پیام دیسکوردی (صدا برای همه)
+            alert(`🎤 شما به اتاق "${foundRoom.name}" وارد شدید. صدای شما برای ${foundRoom.members.length} نفر قابل شنیدن است. (شبیه‌سازی شده)`);
+
+            // مخفی کردن فرم ورود
+            enterRoomForm.classList.add('hidden');
+            // به‌روزرسانی لیست (در real می‌تونست refresh کنه)
+        });
+
+        // ---- ساخت اتاق (اکشن) ----
+        createRoomAction.addEventListener('click', function() {
+            const roomId = newRoomId.value.trim();
+            const max = parseInt(maxUsers.value, 10);
+            const name = roomName.value.trim() || 'اتاق جدید';
+            const pass = roomPassword.value.trim();
+
+            if (!roomId || roomId.length !== 4 || isNaN(roomId)) {
+                alert('آیدی اتاق معتبر نیست (۴ رقم)');
+                return;
+            }
+            if (isNaN(max) || max < 2 || max > 100) {
+                alert('حداکثر نفرات باید بین ۲ تا ۱۰۰ باشد.');
+                return;
+            }
+            // بررسی تکراری نبودن آیدی
+            if (rooms.some(r => r.id === roomId)) {
+                alert('این آیدی قبلا استفاده شده. دوباره تلاش کنید.');
+                newRoomId.value = generateRoomId();
+                return;
+            }
+
+            const newRoom = {
+                id: roomId,
+                name: name,
+                max: max,
+                password: pass,
+                members: [currentUser.name]
+            };
+            rooms.push(newRoom);
+            currentRoomId = roomId;
+
+            // نمایش وضعیت
+            voiceStatus.classList.remove('hidden');
+            voiceRoomName.textContent = newRoom.name;
+            memberCount.textContent = newRoom.members.length + ' نفر';
+
+            alert(`✅ اتاق "${name}" با آیدی ${roomId} ساخته شد! شما به عنوان میزبان وارد شدید.`);
+
+            // مخفی کردن فرم ساخت
+            createRoomForm.classList.add('hidden');
+            // رفرش لیست اتاق‌ها (در اینجا فقط کنسول)
+            console.log('اتاق‌های فعال:', rooms);
+        });
+
+        // ---- ترک اتاق صوتی ----
+        leaveVoiceBtn.addEventListener('click', function() {
+            if (currentRoomId) {
+                const room = rooms.find(r => r.id === currentRoomId);
+                if (room) {
+                    const idx = room.members.indexOf(currentUser.name);
+                    if (idx !== -1) room.members.splice(idx, 1);
+                    // اگر اتاق خالی شد، می‌تونیم حذفش کنیم (اختیاری)
+                    if (room.members.length === 0) {
+                        // حذف اتاق از لیست (اختیاری)
+                        // rooms = rooms.filter(r => r.id !== currentRoomId);
+                        // برای نمایش بهتر، کامنت می‌کنیم ولی می‌تونیم حذف کنیم
+                    }
+                }
+                currentRoomId = null;
+                voiceStatus.classList.add('hidden');
+                alert('شما از اتاق خارج شدید.');
+                // به‌روزرسانی وضعیت
+                // همچنین اگر اتاق خالی شد، حذف از لیست (برای تمیزکاری)
+                rooms = rooms.filter(r => r.members.length > 0 || r.id === currentRoomId);
+            } else {
+                alert('شما در هیچ اتاقی نیستید.');
+            }
+        });
+
+        // ---- شبیه‌سازی ورود با اینتر (روی فیلدهای ورود) ----
+        roomIdInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') joinRoomAction.click();
+        });
+        roomPassInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') joinRoomAction.click();
+        });
+
+        // ---- اضافه کردن قابلیت کلیک روی نام کاربر برای تغییر (اختیاری) ----
+        // اگر کاربر خواست نام رو تغییر بده، دوباره مرحله ۱
+        // (می‌تونیم یک دکمه کوچک بذاریم ولی برای سادگی، ریفش یا کلیک روی نام)
+
+        // ---- مقداردهی اولیه (مخفی کردن step2) ----
+        step2.classList.add('hidden');
+        // یک اتاق پیشفرض برای نمایش
+        if (!rooms.find(r => r.id === '1568')) {
+            rooms.push({ id: '1568', name: 'گپ شبانه', max: 6, password: 'iran2222', members: ['Taha', 'Ali'] });
+        }
+
+        // نمایش در کنسول برای دیباگ
+        console.log('🔥 Taha DEV D - آماده!');
+        console.log('اتاق‌های پیشفرض:', rooms);
+
+        // همچنین یک راهنمای کوچک برای کاربر در صورت نیاز
+        // اگر کاربری بخواهد با اتاق پیشفرض تست کنه
+        // در فوتر پیام
+    })();
+</script>
+
+<!-- توضیحات تکمیلی: این کد به صورت کامل روی GitHub Pages کار می‌کند.
+     ساختار صوتی شبیه‌سازی شده با WebRTC نیست ولی UX کاملا مشابه دیسکورد طراحی شده.
+     برای پیاده‌سازی واقعی صدا نیاز به WebRTC + signaling server هست که خارج از scope این پروژه است.
+     اما UI و منطق اتاق‌ها و ورود/خروج کامل پیاده‌سازی شده است.
+-->
+</body>
+</html>
